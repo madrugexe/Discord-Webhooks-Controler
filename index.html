@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madrug Webhooks Controller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🔥</div>
+                <h1>Madrug Webhooks Controller</h1>
+            </div>
+            <div class="subtitle">Contrôle avancé des webhooks Discord</div>
+        </div>
+
+        <!-- Configuration Webhook -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🔗</span>
+                Configuration Webhook
+            </div>
+            <div class="input-group">
+                <label for="webhookUrl">URL du Webhook:</label>
+                <input type="text" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." 
+                       value="https://discord.com/api/webhooks/1441830692924162241/G3UAHx816upaSk48y2aP5V0kkOwGjoIorWy40M7bqaAk_I1jOtBEH7evSLOufsQ41OaF">
+            </div>
+        </div>
+
+        <!-- Configuration du Message -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">💬</span>
+                Configuration du Message
+            </div>
+            <div class="input-group">
+                <label for="messageContent">Contenu du Message:</label>
+                <textarea id="messageContent" placeholder="Entrez votre message ici...">Hello from Madrug Controller! 🚀</textarea>
+            </div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label for="username">Nom d'utilisateur:</label>
+                    <input type="text" id="username" placeholder="Webhook Bot" value="Madrug Bot">
+                </div>
+                <div class="input-group">
+                    <label for="avatarUrl">URL Avatar:</label>
+                    <input type="text" id="avatarUrl" placeholder="https://example.com/avatar.png">
+                    <img id="avatarPreview" class="avatar-preview" src="" alt="Preview">
+                </div>
+            </div>
+        </div>
+
+        <!-- Options de Flood -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">⚡</span>
+                Options de Flood
+            </div>
+            <div class="grid-3">
+                <div class="input-group">
+                    <label for="delay">Délai (ms):</label>
+                    <input type="number" id="delay" value="500" min="50">
+                </div>
+                <div class="input-group">
+                    <label for="messageCount">Nombre de messages:</label>
+                    <input type="number" id="messageCount" value="50" min="1" max="1000">
+                </div>
+                <div class="input-group">
+                    <label for="burstCount">Messages par rafale:</label>
+                    <input type="number" id="burstCount" value="5" min="1" max="20">
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="randomMessages">
+                <label for="randomMessages">Messages aléatoires</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="useEmbeds">
+                <label for="useEmbeds">Utiliser les Embeds</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="changeUsername">
+                <label for="changeUsername">Changer le nom à chaque message</label>
+            </div>
+        </div>
+
+        <!-- Options Avancées -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🎨</span>
+                Options Avancées
+            </div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label for="embedColor">Couleur Embed: 
+                        <span id="colorPreview" class="color-preview"></span>
+                    </label>
+                    <input type="color" id="embedColor" value="#ff6b6b">
+                </div>
+                <div class="input-group">
+                    <label for="embedTitle">Titre Embed:</label>
+                    <input type="text" id="embedTitle" placeholder="Titre de l'embed">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="embedDescription">Description Embed:</label>
+                <textarea id="embedDescription" placeholder="Description de l'embed"></textarea>
+            </div>
+        </div>
+
+        <!-- Statistiques en Temps Réel -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📊</span>
+                Statistiques en Temps Réel
+            </div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="sentCount">0</div>
+                    <div class="stat-label">Messages Envoyés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="successCount">0</div>
+                    <div class="stat-label">Succès</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="errorCount">0</div>
+                    <div class="stat-label">Erreurs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="latency">0ms</div>
+                    <div class="stat-label">Latence Moyenne</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="speed">0/s</div>
+                    <div class="stat-label">Vitesse</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contrôles -->
+        <div class="controls">
+            <button class="btn btn-primary" onclick="startSpamming()">
+                <span class="btn-icon">🚀</span>
+                Démarrer le Flood
+            </button>
+            <button class="btn btn-stop" onclick="stopSpamming()">
+                <span class="btn-icon">🛑</span>
+                Arrêter
+            </button>
+            <button class="btn btn-secondary" onclick="testWebhook()">
+                <span class="btn-icon">🧪</span>
+                Tester le Webhook
+            </button>
+            <button class="btn btn-clear" onclick="clearLog()">
+                <span class="btn-icon">🗑️</span>
+                Effacer les Logs
+            </button>
+        </div>
+
+        <!-- Journal d'activité -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="icon">📝</span>
+                    Journal d'Activité
+                </div>
+                <div class="section-actions">
+                    <button class="btn-small" onclick="exportLogs()">📤 Exporter</button>
+                </div>
+            </div>
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
